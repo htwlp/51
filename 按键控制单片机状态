@@ -1,0 +1,54 @@
+//非常令我匪夷所思的单片机状态控制
+#include<REGX52.H>
+#include<INTRINS.H>
+
+void Delay20ms()		//@11.0592MHz
+{
+	unsigned char i, j;
+
+	i = 36;
+	j = 217;
+	do
+	{
+		while (--j);
+	} while (--i);
+}
+void Delay500ms()		//@11.0592MHz
+{
+	unsigned char i, j, k;
+
+	_nop_();
+	i = 4;
+	j = 129;
+	k = 119;
+	do
+	{
+		do
+		{
+			while (--k);
+		} while (--j);
+	} while (--i);
+}
+
+void main()
+{
+	
+	P2_0=1;
+	while(1)
+	{
+		if(P0_0==0)//
+		{
+			Delay20ms();//
+			if(P0_0==0)//我到现在也没明白这里为什么要判断两次
+			{
+			 P2_0=~P2_0;//~按位取反
+				
+			
+			}
+			Delay500ms();//作用是延长本次循环的时间，如果不加，单片机运行速度非常快，他会在你按的时候不断的运行此次循环，然后就是一直快速闪烁；
+      //while（P0-0==0）//这个其实更好，他会在你按下开关的时候一直执行此次循环
+		}
+		
+	 
+	}
+}
