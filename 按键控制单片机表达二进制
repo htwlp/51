@@ -1,0 +1,45 @@
+//用按键控制单片机表示二进制
+//无法直接调控单片机的按键P后面的数的增长，但是可设定用一个数的增长对应单片机的各个接口的状态，
+//各个接口本身能用0/1控制，整体又可以8421十进制模式控制，中间二到十的状态转换电脑居然可以自己完成
+//又忘了=是赋值的
+#include<REGX52.H>
+#include<INTRINS.H>
+void Delay20ms()		//@11.0592MHz
+{
+	unsigned char i, j, k;
+
+	_nop_();
+	_nop_();
+	i = 1;
+	j = 216;
+	k = 35;
+	do
+	{
+		do
+		{
+			while (--k);
+		} while (--j);
+	} while (--i);
+}
+void main()
+{
+	unsigned char lednumber;//设定一个数去调控单片机状态
+	lednumber=0;
+	while(1)
+	{
+		
+		
+		if(P0_0==0)//äÆ£¬=ÊÇ¸³Öµ
+		{
+			Delay20ms();
+			if(P0_0==0)
+			{
+				lednumber++;
+				P1=~lednumber;//正数按位取反结果是它本身，但是第一个的时候1按位取反好像是0？
+        
+			}
+			while(P0_0==0);
+			Delay20ms();
+		}
+	}
+}
