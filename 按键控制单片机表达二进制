@@ -35,7 +35,7 @@ void main()
 			if(P0_0==0)
 			{
 				lednumber++;
-				P1=~lednumber;//正数按位取反结果是它本身，但是第一个的时候1按位取反好像是0？
+				P1=~lednumber;//正数按位取反结果是它本身，第一位1按位取反结果是1，1由lednumber提供
         
 			}
 			while(P0_0==0);
