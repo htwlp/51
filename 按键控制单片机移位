@@ -1,0 +1,23 @@
+//只有最核心代码
+void main()
+{
+	P2=0xff;//1111 1111
+	lednum=0;
+	while(1)
+	{
+		if(P0_0==0)//按键核心代码
+		{
+			Delay20ms();
+			if(P0_0==0)
+			{
+				P2=~(0x01<<lednum);
+				lednum++;
+				if(lednum>=8)
+					lednum=0;
+				
+			}
+			while(P0_0==0);
+			Delay20ms();
+		}
+	
+	//取反,然后移位，先取反再移位(P1=~lednumber delay() lednumber=lednumber<<1)，和边取反边移位（P1=~(0X01<<LEDNUMBER)）性质一样，只要取反在前，让取反输入io口即可
