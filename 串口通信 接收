@@ -1,0 +1,45 @@
+这个板子的晶振频率是12mhz
+#include <REGX52.H>
+#include "delay.h"
+/*void UartInit(void)		//4800bps@12.000MHz，
+{
+	PCON |= 0x80;		//使能波特率倍速位SMOD，倍速原因是让其可以分频
+	SCON = 0x50;		//8位数据,可变波特率
+	TMOD &= 0x0F;		//设置定时器1模式,这和下面的语句共同构成不可位寻址寄存器设置方式
+	TMOD |= 0x20;		//设置定时器1模式
+	TL1 = 0xF3;			//设置定时初始值，初值和波特率有关？（不清楚）
+	TH1 = 0xF3;			//设置定时重载值
+	ET1 = 0;			//禁止定时器中断，记不清不让定时器中断是什么原因，可能是不让进入中断程序
+	TR1 = 1;			//定时器1开始计时
+}
+
+
+*/
+8位计时和16位计时的区别除了范围不同，TL1 TH1这双八位一个计数，另一个存放数值，计数完后，AR自动将值赋给CNT
+void UartInit(void)		//4800bps@12.000MHz
+{
+	PCON |= 0x80;		//使能波特率倍速位SMOD
+	SCON = 0x50;		//8位数据,可变波特率
+	TMOD &= 0x0F;		//设置定时器模式
+	TMOD |= 0x20;		//设置定时器模式
+	TL1 = 0xF3;			//设置定时初始值
+	TH1 = 0xF3;			//设置定时重载值
+	ET1 = 0;			//禁止定时器中断
+	TR1 = 1;			//定时器1开始计时
+}
+
+void Uart_Sendbyte(unsigned char byte)
+{
+	SBUF=byte;
+	while(TI==0);//必须使用软件复位,数据集满变一退出循环
+	TI=0;
+}
+void main()
+{
+	UartInit();
+	Uart_Sendbyte(0x44);
+	while(1)
+	{
+		
+	}
+}
