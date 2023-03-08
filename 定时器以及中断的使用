@@ -1,0 +1,26 @@
+#include <REGX52.H>
+void Timer0_Init(void)		//1毫秒@11.0592MHz
+{
+	//AUXR &= 0x7F;		//定时器时钟12T模式
+	TMOD &= 0xF0;		//设置定时器模式
+	TMOD |= 0x01;		//设置定时器模式
+	TL0 = 0x66;		//设置定时初始值
+	TH0 = 0xFC;		//设置定时初始值
+	TF0 = 0;		//清除TF0标志
+	TR0 = 1;		//定时器0开始计时
+	ET0=1;
+	EA=1;
+	PT0=1;                
+  //如果需要外部中断ex则必须设置触发方式是跳沿还是电平，中断函数的using和interrupt在江科大的幻灯片有
+  //外部中断是p3.1，p3.2 实体电平多少是触发中断的条件
+}
+/*
+unsigned int t;
+void Timer0_Routine() interrupt 1
+{
+
+	TL0 = 0x66;		//设置定时初始值
+	TH0 = 0xFC;		//设置定时初始值
+	if(t>=1000)
+		t=0;
+}*/
